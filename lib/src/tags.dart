@@ -25,11 +25,6 @@ class Tags extends StatefulWidget {
       this.textField,
       Key? key})
       : assert(itemCount >= 0),
-        assert(alignment != null),
-        assert(runAlignment != null),
-        assert(direction != null),
-        assert(verticalDirection != null),
-        assert(textDirection != null),
         super(key: key);
 
   ///specific number of columns
@@ -89,7 +84,7 @@ class TagsState extends State<Tags> {
 
   final List<DataList?> _list = [];
 
-  List<Item> get getAllItem => _list.toList();
+  List<Item?> get getAllItem => _list.toList();
 
   //get the current width of the screen
   void _getWidthContext() {
@@ -164,11 +159,11 @@ class TagsState extends State<Tags> {
               tagsTextField: widget.textField!,
               onSubmitted: (String str) {
                 if (!widget.textField!.duplicates) {
-                  final List<DataList> lst =
+                  final List<DataList?> lst =
                       _list.where((l) => l != null && l.title == str).toList();
 
                   if (lst.isNotEmpty) {
-                    lst.forEach((d) => d.showDuplicate = true);
+                    lst.forEach((d) => d!.showDuplicate = true);
                     return;
                   }
                 }
@@ -240,7 +235,7 @@ class DataListInherited extends InheritedWidget {
       required Widget child})
       : super(key: key, child: child);
 
-  final List<DataList>? list;
+  final List<DataList?>? list;
   final bool? symmetry;
   final int? itemCount;
 
@@ -279,6 +274,7 @@ class DataList extends ValueNotifier implements Item {
   }
 
   bool _showDuplicate = false;
+
   set showDuplicate(bool a) {
     _showDuplicate = a;
     // rebuild only the specific Item that changes its value
@@ -287,6 +283,7 @@ class DataList extends ValueNotifier implements Item {
 
   bool get active => _active;
   bool _active = false;
+
   set active(bool a) {
     _active = a;
     // rebuild only the specific Item that changes its value
